@@ -1,0 +1,20 @@
+name: Tailscale smoke test
+
+on:
+  pull_request:
+
+permissions:
+  id-token: write
+
+jobs:
+  tailscale:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_PLAN_CLIENT_ID }}
+          audience: ${{ secrets.TS_PLAN_AUDIENCE }}
+          tags: tag:ci
+      - name: Check Tailscale status
+        run: tailscale status
